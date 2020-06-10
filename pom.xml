@@ -86,11 +86,11 @@
             <version>${hutool.version}</version>
         </dependency>
         <!--Camunda-Springboot-->
-        <dependency>
+        <!--<dependency>
             <groupId>org.camunda.bpm.springboot</groupId>
             <artifactId>camunda-bpm-spring-boot-starter-webapp</artifactId>
             <version>${camunda.spring-boot.version}</version>
-        </dependency>
+        </dependency>-->
         <!-- guava -->
         <dependency>
             <groupId>com.google.guava</groupId>
