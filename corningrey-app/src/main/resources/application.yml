@@ -1,7 +1,7 @@
 spring:
   datasource:
     druid:
-      url: jdbc:mysql://localhost:3306/springboot2_db?useSSL=false
+      url: jdbc:mysql://localhost:3306/camunda_boot?useSSL=false
       username: root
       password: gEx?N*e)4KrI
       driver-class-name: com.mysql.cj.jdbc.Driver
@@ -24,3 +24,5 @@ spring:
   output:
     ansi:
       enabled: detect
+mybatis:
+  mapper-locations: classpath*:/com/zr/corningrey/**/mysql/*.xml
