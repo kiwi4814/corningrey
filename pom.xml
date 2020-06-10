@@ -9,19 +9,41 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.zr</groupId>
-    <artifactId>conringrey</artifactId>
+    <artifactId>corningrey</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>conringrey</name>
+    <name>corningrey</name>
     <description>Initialized Project for Springboot 2.X</description>
 
     <properties>
         <java.version>11</java.version>
+        <mysql.connector.version>8.0.20</mysql.connector.version>
+        <druid.version>1.1.22</druid.version>
+        <hutool.version>5.3.7</hutool.version>
+        <camunda.spring-boot.version>7.13.0</camunda.spring-boot.version>
+        <google.guava.version>29.0-jre</google.guava.version>
+        <alibaba.fastjson.version>1.2.70</alibaba.fastjson.version>
+        <mybatis.plus.version>3.3.2</mybatis.plus.version>
+        <pageHelper.version>3.2.3</pageHelper.version>
+        <knife4j.version>2.0.3</knife4j.version>
+        <!-- 打包跳过单元测试 -->
+        <skipTests>true</skipTests>
     </properties>
 
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <optional>true</optional>
         </dependency>
 
         <dependency>
@@ -35,6 +57,71 @@
                 </exclusion>
             </exclusions>
         </dependency>
+        <!--Redis-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-redis</artifactId>
+        </dependency>
+        <!-- Spring AOP -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-aop</artifactId>
+        </dependency>
+        <!-- Mysql-Connector -->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>${mysql.connector.version}</version>
+        </dependency>
+        <!-- 阿里巴巴数据库连接池 -->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>druid-spring-boot-starter</artifactId>
+            <version>${druid.version}</version>
+        </dependency>
+        <!--Java工具类库-->
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-all</artifactId>
+            <version>${hutool.version}</version>
+        </dependency>
+        <!--Camunda-Springboot-->
+        <dependency>
+            <groupId>org.camunda.bpm.springboot</groupId>
+            <artifactId>camunda-bpm-spring-boot-starter-webapp</artifactId>
+            <version>${camunda.spring-boot.version}</version>
+        </dependency>
+        <!-- guava -->
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>${google.guava.version}</version>
+        </dependency>
+        <!-- fastjson -->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>${alibaba.fastjson.version}</version>
+        </dependency>
+        <!--mybatis-plus-->
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus</artifactId>
+            <version>${mybatis.plus.version}</version>
+        </dependency>
+        <!--PageHelper-->
+        <dependency>
+            <groupId>com.github.pagehelper</groupId>
+            <artifactId>pagehelper</artifactId>
+            <version>${pageHelper.version}</version>
+        </dependency>
+        <!--Swagger-->
+        <dependency>
+            <groupId>com.github.xiaoymin</groupId>
+            <artifactId>knife4j-spring-boot-starter</artifactId>
+            <version>${knife4j.version}</version>
+        </dependency>
+
     </dependencies>
 
     <build>

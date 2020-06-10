@@ -1,13 +1,16 @@
-package com.zr.conringrey;
+package com.zr.corningrey;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+/**
+ * @author heqifeng
+ */
 @SpringBootApplication
-public class ConringreyApplication {
+public class CorningreyApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(ConringreyApplication.class, args);
+        SpringApplication.run(CorningreyApplication.class, args);
     }
 
 }

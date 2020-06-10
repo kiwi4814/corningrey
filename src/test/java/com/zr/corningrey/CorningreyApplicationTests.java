@@ -1,10 +1,10 @@
-package com.zr.conringrey;
+package com.zr.corningrey;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class ConringreyApplicationTests {
+class corningreyApplicationTests {
 
     @Test
     void contextLoads() {
