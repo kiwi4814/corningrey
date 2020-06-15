@@ -97,7 +97,8 @@ public class WebLogAspect {
     public Object doAround(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
         long startTime = System.currentTimeMillis();
         Object ob = proceedingJoinPoint.proceed();
-        Map<String, Object> threadInfo = threadLocal.get();
+        Map<String, Object> threadInfo = threadLocal.get() != null ? threadLocal.get() : new HashMap<>();
+
         Long takeTime = System.currentTimeMillis() - startTime;
         threadInfo.put("takeTime", takeTime);
         logger.info("耗时：" + takeTime);
