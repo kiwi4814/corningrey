@@ -1,20 +1,13 @@
 package com.zr.corningrey.interceptor;
 
-import com.baomidou.mybatisplus.extension.plugins.PaginationInterceptor;
-import com.baomidou.mybatisplus.extension.plugins.pagination.optimize.JsqlParserCountOptimize;
-import org.mybatis.spring.annotation.MapperScan;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.transaction.annotation.EnableTransactionManagement;
-
 /**
  * @author heqifeng
  */
-@EnableTransactionManagement
+/*@EnableTransactionManagement
 @Configuration
-@MapperScan("com.zr.corningrey.**.dao")
+@MapperScan("com.zr.corningrey.**.dao")*/
 public class MybatisPlusConfig {
-
+/*
     @Bean
     public PaginationInterceptor paginationInterceptor() {
         PaginationInterceptor paginationInterceptor = new PaginationInterceptor();
@@ -25,5 +18,5 @@ public class MybatisPlusConfig {
         // 开启 count 的 join 优化,只针对部分 left join
         paginationInterceptor.setCountSqlParser(new JsqlParserCountOptimize(true));
         return paginationInterceptor;
-    }
+    }*/
 }

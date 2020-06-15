@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zr.corningrey.user.dao.UserMapper">
+    <sql id="Base_Column_List">
+        s.vc_user_id as userId,
+        s.vc_user_id as fieldId,
+        s.vc_login_name as loginName,
+        s.vc_user_name as userName,
+        s.vc_password as password,
+        s.vc_avatar as avatar,
+        s.vc_email as email,
+        s.vc_mobile as mobile,
+        s.vc_remark as remark,
+        CAST(s.e_status as CHAR) as status,
+        s3.vc_name as statusName,
+        func_get_dim_name('userType',s.e_user_type,#{user.langType}) as userType,
+        s.vc_worknumber as workNumber,
+        s.e_sex as sex,
+        s5.vc_name as sexName
+    </sql>
+    <update id="updatePwdById" parameterType="com.zr.corningrey.user.model.UserEntity">
+        UPDATE SYS_USER U SET
+        U.VC_PASSWORD=#{password,jdbcType=VARCHAR} WHERE
+        U.vc_user_id=#{userId,jdbcType=VARCHAR}
+    </update>
+    <!-- 查询用户列表 -->
+    <select id="selectPageByUserName" resultType="com.zr.corningrey.user.model.UserEntity">
+        select
+        <include refid="Base_Column_List"/>
+        from sys_user s
+        LEFT JOIN e_dim s2 ON s2.vc_code = s.e_status
+        AND s2.vc_type = 'statusType'
+        LEFT JOIN (SELECT sl.vc_code,sl.vc_name FROM sys_lang sl WHERE sl.e_lang_type = #{user.langType}) s3
+        ON s3.vc_code = s2.vc_name
+        LEFT JOIN e_dim s4 ON s4.vc_code = s.e_sex
+        AND s4.vc_type = 'sexType'
+        LEFT JOIN (SELECT sl.vc_code,sl.vc_name FROM sys_lang sl WHERE sl.e_lang_type = #{user.langType}) s5
+        ON s5.vc_code = s4.vc_name
+        <where>
+            <if test="user.userName!=null and user.userName!=''">
+                and vc_user_name like concat('%',#{user.userName,jdbcType=VARCHAR},'%')
+            </if>
+            <if test="user.loginName!=null and user.loginName!=''">
+                and vc_login_name like concat('%',#{user.loginName,jdbcType=VARCHAR},'%')
+            </if>
+            <if test="user.workNumber!=null and user.workNumber!=''">
+                and vc_worknumber like concat('%',#{user.workNumber,jdbcType=VARCHAR},'%')
+            </if>
+            <if test="user.userType!=null and user.userType!=''">
+                and e_user_type like concat('%',#{user.userType,jdbcType=VARCHAR},'%')
+            </if>
+            <if test="user.status!=null and user.status!=''">
+                and e_status = #{user.status}
+            </if>
+        </where>
+        <if test="orderString!=null and orderString!=''">
+            order by ${orderString}
+        </if>
+    </select>
+    <!-- 新增用户 -->
+    <insert id="insert" parameterType="com.zr.corningrey.user.model.UserEntity">
+        insert into sys_user (vc_user_id,VC_LOGIN_NAME,VC_USER_NAME,VC_PASSWORD, VC_REMARK,
+        e_status, e_user_type,VC_WORKNUMBER,vc_avatar,vc_email,vc_mobile,e_sex,e_is_leave) values (
+        func_seq_generate('100','100','100'),#{loginName}, #{userName},#{password}, #{remark},
+        #{status}, #{userType}, #{workNumber}, #{avatar}, #{email},#{mobile},#{sex},'0')
+    </insert>
+    <!-- 按ID修改用户 -->
+    <update id="updateByPrimaryKeySelective" parameterType="com.zr.corningrey.user.model.UserEntity">
+        update sys_user
+        <set>
+            <if test="loginName != null">VC_LOGIN_NAME = #{loginName},
+            </if>
+            <if test="userName != null">VC_USER_NAME = #{userName},
+            </if>
+            <if test="remark != null">VC_REMARK = #{remark},
+            </if>
+            <if test="status != null">e_status = #{status},
+            </if>
+            <if test="userType != null">e_user_type = #{userType},
+            </if>
+            <if test="workNumber != null">VC_WORKNUMBER = #{workNumber},
+            </if>
+            <if test="email != null">vc_email = #{email},
+            </if>
+            <if test="mobile != null">vc_mobile = #{mobile},
+            </if>
+            <if test="sex != null">e_sex = #{sex},
+            </if>
+        </set>
+        where vc_user_id = #{userId}
+    </update>
+    <!-- 根据id修改用户头像 -->
+    <update id="updateUserAvatarById" parameterType="com.zr.corningrey.user.model.UserEntity">
+        update sys_user set vc_avatar = #{avatar} where vc_user_id = #{userId}
+    </update>
+    <!-- 编辑时查询用户 -->
+    <select id="selectByPrimaryKey" parameterType="String"
+            resultType="com.zr.corningrey.user.model.UserEntity">
+        select
+            s.vc_user_id as userId,
+            s.vc_login_name as loginName,
+            s.vc_user_name as userName,
+            s.vc_password as password,
+            s.vc_avatar as avatar,
+            s.vc_email as email,
+            s.vc_mobile as mobile,
+            s.vc_remark as remark,
+            CAST(e_status as CHAR) as status,
+            s.e_user_type as userType,
+            s.vc_worknumber as workNumber,
+            s.e_sex as sex
+        from sys_user s
+        where s.vc_user_id = #{userId}
+    </select>
+    <!-- 删除用户 -->
+    <delete id="deleteByPrimaryKey" parameterType="String">
+      delete from sys_user where vc_user_id = #{userId}
+    </delete>
+    <!-- 根据登录名查询用户,登录名不能重复 -->
+    <select id="selectByLoginName" parameterType="com.zr.corningrey.user.model.UserEntity"
+            resultType="com.zr.corningrey.user.model.UserEntity">
+        select
+            s.vc_user_id as userId,
+            s.vc_login_name as loginName,
+            s.vc_user_name as userName,
+            s.vc_password as password,
+            s.vc_avatar as avatar,
+            s.vc_email as email,
+            s.vc_mobile as mobile,
+            s.vc_remark as remark,
+            CAST(e_status as CHAR) as status,
+            s.e_user_type as userType,
+            s.vc_worknumber as workNumber,
+            s.e_sex as sex
+        from sys_user s
+        where s.vc_login_name = #{loginName,jdbcType=VARCHAR} and (e_is_leave is null or e_is_leave = '0')
+        <if test="userId!=null and userId!=''">
+            and s.vc_user_id!=#{userId}
+        </if>
+    </select>
+    <select id="selectByUserNameAndPw" parameterType="com.zr.corningrey.user.model.UserEntity"
+            resultType="com.zr.corningrey.user.model.UserEntity">
+       select
+            s.vc_user_id as userId,
+            s.vc_login_name as loginName,
+            s.vc_user_name as userName,
+            s.vc_password as password,
+            s.vc_avatar as avatar,
+            s.vc_email as email,
+            s.vc_mobile as mobile,
+            s.vc_remark as remark,
+            CAST(e_status as CHAR) as status,
+            s.e_user_type as userType,
+            s.vc_worknumber as workNumber,
+            s.e_sex as sex
+        from sys_user s
+        where s.vc_login_name = #{loginName}
+        and s.vc_password = #{password}
+        and (s.e_is_leave is null or s.e_is_leave = '0')
+    </select>
+    <!-- 查询所有用户 -->
+    <select id="findUserAll" resultType="com.zr.corningrey.user.model.UserEntity">
+        SELECT DISTINCT
+          vc_user_id as userId,
+          vc_user_name as userName
+       FROM sys_user  WHERE (e_is_leave is null or e_is_leave = '0') and e_status = 0
+    </select>
+    <!-- 查询用户头像存储的相对路径 -->
+    <select id="selectUserAvatarPath" resultType="java.lang.String">
+        SELECT vc_doc_path AS docPath
+        FROM doc_info
+        WHERE vc_doc_id = (
+            SELECT vc_avatar
+            FROM sys_user
+            WHERE vc_user_id = #{userId}
+        )
+    </select>
+
+    <select id="userCountByName" parameterType="java.util.HashMap" resultType="java.lang.Integer">
+        SELECT
+        count( 1 )
+        FROM
+        sys_user
+        WHERE
+        ${dbName} = #{newName}
+        <if test="oldName != null and  oldName != ''">
+            AND ${dbName} != #{oldName}
+        </if>
+        and vc_user_id != #{id}
+        and (e_is_leave is null or e_is_leave = '0')
+    </select>
+</mapper>

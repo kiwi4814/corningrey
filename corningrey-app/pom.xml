@@ -8,17 +8,24 @@
         <version>0.0.1-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
-    <packaging>pom</packaging>
+    <packaging>war</packaging>
     <artifactId>corningrey-app</artifactId>
-    <!--<build>
+    <build>
         <finalName>corningrey-app</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>3.1.0</version>
+                <configuration>
+                    <failOnMissingWebXml>false</failOnMissingWebXml>
+                </configuration>
+            </plugin>
         </plugins>
-        &lt;!&ndash;配置Maven 对resource文件 过滤 &ndash;&gt;
         <resources>
             <resource>
                 <directory>src/main/java</directory>
@@ -39,7 +46,7 @@
                 <filtering>false</filtering>
             </resource>
         </resources>
-    </build>-->
+    </build>
     <dependencies>
         <dependency>
             <groupId>com.zr</groupId>

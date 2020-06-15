@@ -24,7 +24,7 @@
         </layout>
     </appender>
 
-    <logger name="com.zr.corningrey" level="INFO" additivity="false">
+    <logger name="com.zr.corningrey" level="DEBUG" additivity="false">
         <appender-ref ref="STDOUT"/>
     </logger>
 

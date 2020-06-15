@@ -9,7 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <artifactId>corningrey-user</artifactId>
-    <!--<build>
+    <build>
         <resources>
             <resource>
                 <directory>src/main/java</directory>
@@ -23,5 +23,5 @@
                 <targetPath>META-INF/resources/</targetPath>
             </resource>
         </resources>
-    </build>-->
+    </build>
 </project>
