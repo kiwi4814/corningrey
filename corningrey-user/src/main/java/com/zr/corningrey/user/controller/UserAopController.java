@@ -12,7 +12,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/aop")
-public class UserControllerAop {
+public class UserAopController {
     @Resource
     private UserService userService;
 

@@ -1,8 +1,10 @@
 package com.zr.corningrey.aop;
 
 import org.aspectj.lang.JoinPoint;
-import org.aspectj.lang.ProceedingJoinPoint;
-import org.aspectj.lang.annotation.*;
+import org.aspectj.lang.annotation.AfterReturning;
+import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Before;
+import org.aspectj.lang.annotation.Pointcut;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.annotation.Order;
@@ -93,7 +95,7 @@ public class WebLogAspect {
      * @return
      * @throws Throwable
      */
-    @Around(value = "webLog()")
+/*    @Around(value = "webLog()")
     public Object doAround(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
         long startTime = System.currentTimeMillis();
         Object ob = proceedingJoinPoint.proceed();
@@ -104,14 +106,14 @@ public class WebLogAspect {
         logger.info("耗时：" + takeTime);
         threadLocal.set(threadInfo);
         return ob;
-    }
+    }*/
 
     /**
      * 异常处理
      *
      * @param throwable
      */
-    @AfterThrowing(value = "webLog()", throwing = "throwable")
+/*    @AfterThrowing(value = "webLog()", throwing = "throwable")
     public void doAfterThrowing(Throwable throwable) {
         RequestAttributes ra = RequestContextHolder.getRequestAttributes();
 
@@ -120,6 +122,6 @@ public class WebLogAspect {
         HttpServletRequest request = sra.getRequest();
         // 异常信息
         logger.error("{}接口调用异常，异常信息{}", request.getRequestURI(), throwable);
-    }
+    }*/
 
 }
