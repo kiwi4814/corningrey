@@ -1,7 +1,6 @@
-package com.zr.corningrey.user.integration;
+package com.zr.corningrey.feign.integration;
 
-import com.zr.corningrey.user.entity.DemoResp;
-import com.zr.corningrey.user.entity.ResponseData;
+import com.zr.corningrey.feign.entity.ResponseData;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -10,12 +9,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 
-@FeignClient(name = "feignClientProxy",url = "http://wuwenliang.net/samples/")
+@FeignClient(name = "feignClientProxy", url = "http://192.168.1.202:8081/grandcanal-camundav2/")
 public interface FeignClientProxy {
 
-    @RequestMapping(value = "/snowalker.json", method = RequestMethod.GET)
+    @RequestMapping(value = "/api/statistics/findCommonData.json", method = RequestMethod.GET)
     @ResponseBody
-    ResponseData<DemoResp> invoke(@RequestParam(value="name") String name);
+    ResponseData invoke(@RequestParam(value = "tenantId") String tenantId);
 
     /**
      * 容错处理类，当调用失败时 返回空字符串
@@ -23,8 +22,8 @@ public interface FeignClientProxy {
     @Component
     class DefaultFallback implements FeignClientProxy {
         @Override
-        public ResponseData<DemoResp> invoke(@RequestParam(value="snowalker") String name){
-            return new ResponseData<DemoResp>().setCode("40004").setDesc("服务异常").setData(null);
+        public ResponseData invoke(@RequestParam(value = "tenantId") String name) {
+            return ResponseData.builder().message("错误").data(null).build();
         }
     }
 }

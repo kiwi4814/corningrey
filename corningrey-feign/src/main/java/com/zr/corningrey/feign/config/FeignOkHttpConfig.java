@@ -1,4 +1,4 @@
-package com.zr.corningrey.user.config;
+package com.zr.corningrey.feign.config;
 
 import feign.Feign;
 import okhttp3.ConnectionPool;
