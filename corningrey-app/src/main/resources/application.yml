@@ -26,3 +26,6 @@ spring:
       enabled: detect
 mybatis-plus:
   mapper-locations: classpath*:/com/zr/corningrey/**/mysql/*.xml
+feign:
+  connectTimeoutMillis: 15000
+  readTimeoutMillis: 1800000
