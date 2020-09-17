@@ -1,4 +1,6 @@
 spring:
+  application:
+    name: corningrey
   datasource:
     druid:
       url: jdbc:mysql://localhost:3306/springboot2_db?useSSL=false
@@ -24,8 +26,28 @@ spring:
   output:
     ansi:
       enabled: detect
+# mybatis-plus配置
 mybatis-plus:
   mapper-locations: classpath*:/com/zr/corningrey/**/mysql/*.xml
+# Open-feign 配置
 feign:
   connectTimeoutMillis: 15000
   readTimeoutMillis: 1800000
+rocketmq:
+  consumer:
+    consumeMessageBatchMaxSize: 1
+    consumeThreadMax: 64
+    consumeThreadMin: 20
+    groupName: ${spring.application.name}
+    isOnOff: 'on #该应用是否启用消费者'
+    namesrvAddr: localhost:9876
+    topics: DemoTopic
+  producer:
+    groupName: ${spring.application.name}
+    isOnOff: 'on #该应用是否启用生产者'
+    maxMessageSize: 4096
+    namesrvAddr: localhost:9876
+    retryTimesWhenSendFailed: 2
+    sendMsgTimeout: 3000
+server:
+  port: 8081

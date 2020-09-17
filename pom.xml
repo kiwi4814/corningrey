@@ -8,6 +8,8 @@
         <module>corningrey-app</module>
         <module>corningrey-config</module>
         <module>corningrey-feign</module>
+        <module>corningrey-rocketmq</module>
+        <module>corningrey-easypoi</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -162,6 +164,14 @@
             <artifactId>feign-okhttp</artifactId>
             <version>11.0</version>
         </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.apache.rocketmq/rocketmq-client -->
+        <dependency>
+            <groupId>org.apache.rocketmq</groupId>
+            <artifactId>rocketmq-client</artifactId>
+            <version>4.7.1</version>
+        </dependency>
+
 
     </dependencies>
     <repositories>
