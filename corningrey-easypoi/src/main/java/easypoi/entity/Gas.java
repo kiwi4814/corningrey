@@ -10,7 +10,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Gas {
-    private String date;
-    private String hydGas;
-    private String natGas;
+    private long dateL;
+    private Object date;
+    private Object hydGas;
+    private Object natGas;
 }
