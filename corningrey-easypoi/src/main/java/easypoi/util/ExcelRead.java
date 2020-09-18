@@ -1,18 +1,22 @@
 package easypoi.util;
 
+import cn.afterturn.easypoi.excel.ExcelExportUtil;
+import cn.afterturn.easypoi.excel.entity.ExportParams;
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.poi.excel.ExcelReader;
 import cn.hutool.poi.excel.ExcelUtil;
 import cn.hutool.poi.excel.ExcelWriter;
-import com.sun.deploy.net.MessageHeader;
 import easypoi.entity.Gas;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Workbook;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.Month;
-import java.time.temporal.ChronoUnit;
+import java.time.Period;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -23,10 +27,10 @@ public class ExcelRead {
 
     private static List<Gas> gasList = new ArrayList<>();
 
-    public static void main(String[] args) {
-        String year = "2013";
+    public static void main(String[] args) throws IOException {
+        String year = "2015";
         // ExcelReader reader = ExcelUtil.getReader(FileUtil.file("/Users/heqifeng/Desktop/Energy Report20140609.xlsx"), "报告");
-        File file = new File("E:\\kiwi\\Desktop\\2013~2015能耗报表\\" + year);
+        File file = new File("/Users/heqifeng/Desktop/2013_2015能耗报表/" + year);
         listAllFiles(file);
         gasList = gasList.stream().sorted(Comparator.comparingLong(Gas::getDateL)).collect(Collectors.toList());
         intoExcel(year);
@@ -58,35 +62,47 @@ public class ExcelRead {
             gasList.add(Gas.builder().dateL(dateToLong(dateStr)).date(dateStr).hydGas(c1).natGas(c2).build());
         } catch (IllegalStateException e) {
             c3 = cell3.getStringCellValue();
-            String weekends = c3.toString();
-            weekends = weekends.substring(0, weekends.indexOf("~"));
-            if (weekends.length() >= 8) {
+            String weekends = c3.toString().replaceAll("/", "-");
+            // 2-8
+            String weekendEnd = weekends.substring(0, weekends.indexOf("-")) + "-" + weekends.substring(weekends.indexOf("~") + 1);
+            String[] weekendEndArray = weekendEnd.split("-");
+            if (weekendEndArray.length == 3) {
+                LocalDate endDay = LocalDate.of(Integer.parseInt(weekendEndArray[0]), Integer.parseInt(weekendEndArray[1]), Integer.parseInt(weekendEndArray[2]));
+                weekends = weekends.substring(0, weekends.indexOf("~"));
                 String[] date = weekends.split("-");
-                if (date.length != 3) {
-                    date = weekends.split("/");
-                }
                 if (date.length == 3) {
+
                     LocalDate start = LocalDate.of(Integer.parseInt(date[0]), Integer.parseInt(date[1]), Integer.parseInt(date[2]));
-                    gasList.add(Gas.builder().dateL(dateToLong(start.toString())).date(start.toString()).hydGas(c1).natGas(c2).build());
-                    gasList.add(Gas.builder().dateL(dateToLong(start.plusDays(1).toString())).date(start.plusDays(1).toString()).hydGas(c1).natGas(c2).build());
-                    gasList.add(Gas.builder().dateL(dateToLong(start.plusDays(2).toString())).date(start.plusDays(2).toString()).hydGas(c1).natGas(c2).build());
+                    int n = (int) Period.between(start, endDay).getDays();
+                    for (int i = 0; i < n + 1; i++) {
+                        gasList.add(Gas.builder().dateL(dateToLong(start.plusDays(i).toString())).date(start.plusDays(i).toString()).hydGas(c1).natGas(c2).build());
+                    }
                 }
             }
-
         }
-
     }
 
-    static void intoExcel(String year) {
+    static void intoExcel(String year) throws IOException {
         // 通过工具类创建writer
         ExcelWriter writer = ExcelUtil.getWriter("d:/" + year + ".xlsx");
-
-// 合并单元格后的标题行，使用默认标题样式
-        // writer.merge(4, "一班成绩单");
-// 一次性写出内容，使用默认样式，强制输出标题
+        // 合并单元格后的标题行，使用默认标题样式
+        //writer.merge(0, "一班成绩单");
+        // 一次性写出内容，使用默认样式，强制输出标题
         writer.write(gasList, true);
-// 关闭writer，释放内存
+        // 关闭writer，释放内存
         writer.close();
+    }
+
+    static void intoExcel2(String year) throws IOException {
+        ExportParams params = new ExportParams("课程详情", null, "课程详情");
+        Workbook workbook = ExcelExportUtil.exportExcel(params, Gas.class, gasList);
+        File targetFile = new File("temp.xls");
+        if (targetFile.exists()) {
+            boolean newFile = targetFile.createNewFile();
+        }
+        FileOutputStream fos = new FileOutputStream(targetFile);
+        workbook.write(fos);
+        fos.close();
     }
 
 
