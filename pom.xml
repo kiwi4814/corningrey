@@ -30,7 +30,7 @@
         <hutool.version>5.3.7</hutool.version>
         <camunda.spring-boot.version>7.13.0</camunda.spring-boot.version>
         <google.guava.version>29.0-jre</google.guava.version>
-        <alibaba.fastjson.version>1.2.70</alibaba.fastjson.version>
+        <alibaba.fastjson.version>1.2.83</alibaba.fastjson.version>
         <mybatis.plus.version>3.3.2</mybatis.plus.version>
         <pageHelper.version>3.2.3</pageHelper.version>
         <knife4j.version>2.0.3</knife4j.version>
